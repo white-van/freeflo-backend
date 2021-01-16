@@ -1,6 +1,7 @@
 class VersionsController < ApplicationController
   before_action :set_version, only: [:show, :update, :destroy]
   before_action :set_project, only: [:index, :create]
+  before_action :authenticate_and_set_user, except: [:show, :index]
 
   # GET /projects/1/versions
   def index

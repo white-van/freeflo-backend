@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy]
+  before_action :set_project, only: [:show, :update, :destroy, :heart, :unheart]
+  before_action :authenticate_and_set_user, except: [:show, :index]
 
   # GET /projects
   def index
@@ -31,6 +32,16 @@ class ProjectsController < ApplicationController
     else
       render json: @project.errors, status: :unprocessable_entity
     end
+  end
+
+  # POST /projects/1/heart
+  def heart
+    current_user.like(@project)
+  end
+
+  # DELETE /projects/1/heart
+  def unheart
+    current_user.unlike(@project)
   end
 
   # DELETE /projects/1

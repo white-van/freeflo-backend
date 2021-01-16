@@ -7,4 +7,6 @@ class User < ApplicationRecord
 
   has_many :projects
   belongs_to :organization, optional: true
+
+  recommends :projects
 end

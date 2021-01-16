@@ -1,6 +1,7 @@
 class PullRequestsController < ApplicationController
   before_action :set_pull_request, only: [:show, :update, :destroy]
   before_action :set_project, only: [:index, :create]
+  before_action :authenticate_and_set_user, except: [:show, :index]
 
   # GET /projects/1/pull_requests
   def index

@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   resources :projects do
     resources :versions, shallow: true
     resources :pull_requests, shallow: true
+    member do
+      post '/heart', to: 'projects#heart'
+      delete '/heart', to: 'projects#unheart'
+    end
   end
 
   resources :organizations

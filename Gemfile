@@ -31,6 +31,8 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'activerecord-cockroachdb-adapter'
 
+gem 'recommendable'
+
 gem 'diffy'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
