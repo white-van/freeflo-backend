@@ -1,0 +1,28 @@
+@pull_requests.map do |pull_request|
+  json = {
+    owner_id: pull_request.user_id,
+    pull_request_id: pull_request.id,
+    created_at: pull_request.created_at,
+    updated_at: pull_request.updated_at,
+    branch_id: pull_request.branch_id,
+    name: pull_request.name,
+  }
+
+  if pull_request.accepted.present?
+    json[:status] = "pending"
+  elsif pull_request.accepted?
+    json[:status] = "denied"
+  else
+    json[:status] = "approved"
+
+  json[:reviewers] = pull_request.reviewers.map do |id|
+    user = User.find(id)
+    {
+      id: id,
+      full_name: user.full_name,
+      avatar_url: user.avatar_url
+    }
+  end
+
+  json
+end
