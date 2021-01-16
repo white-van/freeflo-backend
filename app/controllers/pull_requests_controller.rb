@@ -10,6 +10,15 @@ class PullRequestsController < ApplicationController
     render json: @pull_requests
   end
 
+  # GET /me/pull_requests/owned
+  def owned
+    @pull_requests = PullRequest.where(user_id: current_user.id).page(@page).per(@per)
+  end
+
+  # TODO
+  # GET /me/pull_requests/to_review
+  def to_review; end
+
   # GET /pull_requests/1
   def show
     render json: @pull_request
@@ -58,8 +67,7 @@ class PullRequestsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def pull_request_params
     params.require(:pull_request).permit(
-      :project_id,
-      :user_id,
+      :title,
       :reviewers
     )
   end

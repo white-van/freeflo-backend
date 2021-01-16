@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :refresh_tokens, dependent: :delete_all
   has_many :blacklisted_tokens, dependent: :delete_all
 
-  has_many :projects
+  has_many :projects, dependent: :delete_all
   belongs_to :organization, optional: true
 
   recommends :projects

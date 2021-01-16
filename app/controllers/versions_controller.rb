@@ -3,7 +3,7 @@ class VersionsController < ApplicationController
   before_action :set_project, only: [:index, :create]
   before_action :authenticate_and_set_user, except: [:show, :index]
 
-  # GET /projects/1/versions
+  # GET /projects/1/commits
   def index
     @versions = @project.page(@page).per(@per)
 
@@ -15,9 +15,11 @@ class VersionsController < ApplicationController
     render json: @version
   end
 
-  # POST /projects/1/versions
+  # POST /projects/1/commits
   def create
-    @version = Version.new(version_params)
+    creation_params = version_params
+    @version = Version.new(creation_params)
+    @version.branch_id = Branch.find_by(name: creation_params[:branch_name] || 'main').id
 
     if @version.save
       render json: @version, status: :created, location: @version
@@ -52,6 +54,9 @@ class VersionsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def version_params
-    params.fetch(:version, {})
+    params.require(:commit).permit(
+      :content,
+      :branch_name
+    )
   end
 end

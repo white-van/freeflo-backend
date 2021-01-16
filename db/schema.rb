@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_111327) do
+ActiveRecord::Schema.define(version: 2021_01_16_130244) do
 
   create_table "blacklisted_tokens", force: :cascade do |t|
     t.string "token"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 2021_01_16_111327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_branches_on_project_id"
+  end
+
+  create_table "contributions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_contributions_on_project_id"
+    t.index ["user_id"], name: "index_contributions_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -56,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_01_16_111327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "branch_id"
+    t.string "name", null: false
     t.index ["branch_id"], name: "index_pull_requests_on_branch_id"
     t.index ["reviewers"], name: "index_pull_requests_on_reviewers", using: :gin
     t.index ["user_id"], name: "index_pull_requests_on_user_id"
@@ -78,6 +88,7 @@ ActiveRecord::Schema.define(version: 2021_01_16_111327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
+    t.string "full_name", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["username"], name: "index_users_on_username", unique: true
@@ -97,6 +108,8 @@ ActiveRecord::Schema.define(version: 2021_01_16_111327) do
 
   add_foreign_key "blacklisted_tokens", "users"
   add_foreign_key "branches", "projects"
+  add_foreign_key "contributions", "projects"
+  add_foreign_key "contributions", "users"
   add_foreign_key "projects", "organizations"
   add_foreign_key "projects", "users"
   add_foreign_key "pull_requests", "branches"

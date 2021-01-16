@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy, :heart, :unheart]
+  before_action :set_project, only: [:show, :update, :destroy, :heart, :unheart, recommended]
   before_action :authenticate_and_set_user, except: [:show, :index]
 
   # GET /projects
@@ -9,6 +9,24 @@ class ProjectsController < ApplicationController
     render json: @projects
   end
 
+  # GET /me/projects/recommended
+  def recommended
+    @projects = current_user.recommended_projects.page(@page).per(@per)
+  end
+
+  # GET /me/projects/owned
+  def owned
+    @projects = current_user.projects.page(@page).per(@per)
+  end
+
+  # GET /me/projects/unowned_contrib
+  def unowned_contrib
+    @projects = Project.joins(:contributions)
+                       .where('contributions.user_id = ?', current_user.id)
+                       .where.not('projects.user_id = ?', current_user.id)
+                       .include(:user)
+  end
+
   # GET /projects/1
   def show
     render json: @project
@@ -16,13 +34,18 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   def create
-    @project = Project.new(project_params)
-
-    if @project.save
-      render json: @project, status: :created, location: @project
-    else
-      render json: @project.errors, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      @project = Project.create!(project_params)
+      @main_branch = Branch.create!({ name: 'main', project_id: @project.id })
     end
+
+    render json: @project, status: :created, location: @project
+  rescue ActiveRecord::Rollback
+    render(json: {
+             project: @project.errors,
+             branch: @branch.errors
+           },
+           status: :unprocessable_entity)
   end
 
   # PATCH/PUT /projects/1
@@ -61,7 +84,7 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(
       :name,
       :description,
-      :fork_id
+      :organization_id
     )
   end
 end
