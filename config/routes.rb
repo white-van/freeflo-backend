@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     member do
       post '/heart', to: 'projects#heart'
       delete '/heart', to: 'projects#unheart'
+      get '/contributors', to: 'projects#contributors'
     end
   end
 

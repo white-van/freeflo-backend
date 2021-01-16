@@ -1,22 +1,31 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_and_set_user, except: [:show, :index]
-  before_action :set_project, only: [:show, :update, :destroy, :heart, :unheart, recommended]
+  before_action :set_project, only: [
+    :show,
+    :update,
+    :destroy,
+    :heart,
+    :unheart,
+    :recommended,
+    :contributors
+  ]
 
   # GET /projects
   def index
     @projects = Project.page(@page).per(@per)
-
     render json: @projects
   end
 
   # GET /me/projects/recommended
   def recommended
     @projects = current_user.recommended_projects.page(@page).per(@per)
+    render json: @projects
   end
 
   # GET /me/projects/owned
   def owned
     @projects = current_user.projects.page(@page).per(@per)
+    render json: @projects
   end
 
   # GET /me/projects/unowned_contrib
@@ -25,11 +34,18 @@ class ProjectsController < ApplicationController
                        .where('contributions.user_id = ?', current_user.id)
                        .where.not('projects.user_id = ?', current_user.id)
                        .includes(:user).page(@page).per(@per)
+    render json: @projects
   end
 
   # GET /projects/1
   def show
     render json: @project
+  end
+
+  # GET /projects/1/contributors
+  def contributors
+    @contributors = @project.contributors.page(@page).per(@per)
+    render json: @contributors
   end
 
   # POST /projects

@@ -7,7 +7,6 @@ class VersionsController < ApplicationController
   # GET /projects/1/commits
   def index
     @versions = @branch.versions.page(@page).per(@per)
-
     render json: @versions
   end
 
@@ -22,11 +21,13 @@ class VersionsController < ApplicationController
     creation_params = version_params
     @version = Version.new(creation_params)
     @version.branch_id = @branch.id
-    if @version.save
-      render json: @version, status: :created, location: @version
-    else
-      render json: @version.errors, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      @version.save!
+      current_user.add_contribution(@project.id)
     end
+    render json: @version, status: :created, location: @version
+  rescue ActiveRecord::Rollback
+    render json: @version.errors, status: :unprocessable_entity
   end
 
   # PATCH/PUT /versions/1
@@ -41,6 +42,7 @@ class VersionsController < ApplicationController
   # DELETE /versions/1
   def destroy
     @version.destroy
+    head :ok
   end
 
   private

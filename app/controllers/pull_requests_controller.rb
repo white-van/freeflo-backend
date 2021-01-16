@@ -6,7 +6,6 @@ class PullRequestsController < ApplicationController
   # GET /projects/1/pull_requests
   def index
     @pull_requests = PullRequest.page(@page).per(@per)
-
     render json: @pull_requests
   end
 

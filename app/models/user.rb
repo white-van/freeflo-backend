@@ -9,4 +9,15 @@ class User < ApplicationRecord
   belongs_to :organization, optional: true
 
   recommends :projects
+
+  def add_contribution(project_id)
+    cont = Contribution.where(user_id: id).where(project_id: project_id)
+    return true unless cont.empty?
+
+    cont = Contribution.new({
+                              user_id: id,
+                              project_id: project_id
+                            })
+    cont.save
+  end
 end
