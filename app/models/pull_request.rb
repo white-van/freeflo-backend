@@ -4,6 +4,6 @@ class PullRequest < ApplicationRecord
   has_many :versions, through: :branches
 
   def self.latest_version
-    versions.order('created_at DESC').first
+    branch.most_recent_version_after
   end
 end
