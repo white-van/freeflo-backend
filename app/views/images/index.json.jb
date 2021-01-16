@@ -1,6 +1,0 @@
-@images.map do |image|
-  {
-    id: image.id,
-    url: image_url(image, format: :json)
-  }
-end

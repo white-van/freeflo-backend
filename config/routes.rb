@@ -40,7 +40,7 @@ Rails.application.routes.draw do
     end
   end
 
-  post '/presigned_urls', to: 'images#get_presigned_urls'
+  post '/presigned_url', to: 'images#get_presigned_url'
 
   resources :organizations
 end

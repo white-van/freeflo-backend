@@ -1,18 +1,15 @@
 class ImagesController < ApplicationController
+
+  # GET /presigned_url
+  def get_presigned_url  
+    signature = S3_BUCKET.presigned_post(
+      key: "#{SecureRandom.uuid}_${filename}",
+      success_action_status: '201',
+      signature_expiration: (Time.now.utc + 15.minutes),
+      acl: 'public-read'
+    )
   
-  # GET /presigned_urls
-  def get_presigned_urls
-    if !params[:count] && !params[:count].is_a?(Integer)
-      head :bad_request
-    end
-  
-    signatures = []
-    params[:count].to_i.times do
-      data = get_presigned_url
-      signatures << data
-    end
-  
-    render json: signatures, status: :ok
+    render json: signature, status: :ok
   end
 
 

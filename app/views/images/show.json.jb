@@ -1,5 +1,1 @@
-{
-  id: @image.id,
-  created_at: @image.created_at,
-  updated_at: @image.updated_at
-}
+  { url: signature.url, url_fields: signature.fields }
