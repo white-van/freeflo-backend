@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy, :heart, :unheart, recommended]
   before_action :authenticate_and_set_user, except: [:show, :index]
+  before_action :set_project, only: [:show, :update, :destroy, :heart, :unheart, recommended]
 
   # GET /projects
   def index
@@ -24,7 +24,7 @@ class ProjectsController < ApplicationController
     @projects = Project.joins(:contributions)
                        .where('contributions.user_id = ?', current_user.id)
                        .where.not('projects.user_id = ?', current_user.id)
-                       .include(:user)
+                       .includes(:user).page(@page).per(@per)
   end
 
   # GET /projects/1

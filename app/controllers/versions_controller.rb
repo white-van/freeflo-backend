@@ -1,11 +1,12 @@
 class VersionsController < ApplicationController
   before_action :set_version, only: [:show, :update, :destroy]
   before_action :set_project, only: [:index, :create]
+  before_action :set_branch, only: [:index, :create]
   before_action :authenticate_and_set_user, except: [:show, :index]
 
   # GET /projects/1/commits
   def index
-    @versions = @project.page(@page).per(@per)
+    @versions = @branch.versions.page(@page).per(@per)
 
     render json: @versions
   end
@@ -16,11 +17,11 @@ class VersionsController < ApplicationController
   end
 
   # POST /projects/1/commits
+  # Must pass commit: {branch_name: ...} in the body of the request. Default is 'main'
   def create
     creation_params = version_params
     @version = Version.new(creation_params)
-    @version.branch_id = Branch.find_by(name: creation_params[:branch_name] || 'main').id
-
+    @version.branch_id = @branch.id
     if @version.save
       render json: @version, status: :created, location: @version
     else
@@ -50,6 +51,13 @@ class VersionsController < ApplicationController
 
   def set_project
     @project = Project.find(params[:id])
+  end
+
+  def set_branch
+    @branch = @project.branches
+                      .where(name: (creation_params[:branch_name] || 'main'))
+                      .limit(1)
+                      .first
   end
 
   # Only allow a trusted parameter "white list" through.
