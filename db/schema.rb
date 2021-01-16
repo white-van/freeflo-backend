@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_062522) do
+ActiveRecord::Schema.define(version: 2021_01_16_065910) do
 
   create_table "blacklisted_tokens", force: :cascade do |t|
     t.string "token"
@@ -32,12 +32,12 @@ ActiveRecord::Schema.define(version: 2021_01_16_062522) do
   create_table "projects", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "name", null: false
-    t.bigint "stars_count", default: 0
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
     t.bigint "fork_id"
+    t.bigint "heart_count", default: 0
     t.index ["organization_id"], name: "index_projects_on_organization_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
