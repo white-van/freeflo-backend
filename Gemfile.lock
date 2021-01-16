@@ -75,7 +75,12 @@ GEM
       dotenv (= 2.7.6)
       railties (>= 3.2)
     erubi (1.10.0)
+    et-orbi (1.2.4)
+      tzinfo
     ffi (1.14.2)
+    fugit (1.4.1)
+      et-orbi (~> 1.1, >= 1.1.8)
+      raabro (~> 1.4)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hooks (0.4.1)
@@ -119,6 +124,7 @@ GEM
     pg (1.2.3)
     puma (4.3.7)
       nio4r (~> 2.0)
+    raabro (1.4.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-test (1.1.0)
@@ -162,6 +168,11 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    sidekiq-cron (1.2.0)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
+    sidekiq-middleware (0.3.0)
+      sidekiq (>= 2.12.4)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -203,6 +214,8 @@ DEPENDENCIES
   recommendable
   redis (~> 4.0)
   sidekiq
+  sidekiq-cron (~> 1.1)
+  sidekiq-middleware
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
