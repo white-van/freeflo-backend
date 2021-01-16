@@ -35,5 +35,6 @@ module FreeflowApi
     config.api_only = true
 
     Diffy::Diff.default_format = :html
+    Sidekiq::Cron::Job.create(name: 'Daily tokens deletion', cron: '0 6 * * *', class: 'TokenDeletionEnqueuerWorker')
   end
 end

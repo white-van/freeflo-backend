@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_111327) do
+
+ActiveRecord::Schema.define(version: 2021_01_16_130244) do
 
   create_table "blacklisted_tokens", force: :cascade do |t|
     t.string "token"
@@ -27,6 +28,15 @@ ActiveRecord::Schema.define(version: 2021_01_16_111327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_branches_on_project_id"
+  end
+
+  create_table "contributions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_contributions_on_project_id"
+    t.index ["user_id"], name: "index_contributions_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -99,6 +109,8 @@ ActiveRecord::Schema.define(version: 2021_01_16_111327) do
 
   add_foreign_key "blacklisted_tokens", "users"
   add_foreign_key "branches", "projects"
+  add_foreign_key "contributions", "projects"
+  add_foreign_key "contributions", "users"
   add_foreign_key "projects", "organizations"
   add_foreign_key "projects", "users"
   add_foreign_key "pull_requests", "branches"

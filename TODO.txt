@@ -1,0 +1,11 @@
+Noor:
+
+1) Add array of contributor ids to projects
+  a. support with endpoints and controller actions
+  b. validate that user is a contributor
+
+2) Dump forks table and create branches table
+
+3) Fix all the associations with the new table
+
+4) Implement merging via a queued background job

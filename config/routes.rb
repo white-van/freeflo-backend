@@ -10,12 +10,33 @@ Rails.application.routes.draw do
     get '/commits', to: 'versions#index'
   end
 
+  scope 'me' do
+    scope 'pull_requests' do
+      get '/owned', to: 'pull_requests#owned'
+      get '/to_review', to: 'pull_requests#to_review'
+    end
+    scope 'projects' do
+      get '/recommended', to: 'projects#recommended'
+      get '/owned', to: 'projects#owned'
+      get 'unowned_contrib', to: 'projects#unowned_contrib'
+    end
+  end
+
   resources :projects do
-    resources :versions, shallow: true
-    resources :pull_requests, shallow: true
+    resources :versions, path: '/commits', shallow: true
+    resources :pull_requests, except: [:destroy, :show, :update]
+    resources :branches, shallow: true
     member do
       post '/heart', to: 'projects#heart'
       delete '/heart', to: 'projects#unheart'
+      get '/contributors', to: 'projects#contributors'
+    end
+  end
+
+  resources :pull_requests, only: [:destroy, :show, :update] do
+    member do
+      post '/status', to: 'pull_requests#status'
+      post '/merge', to: 'pull_requests#merge'
     end
   end
 
