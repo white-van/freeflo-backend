@@ -6,7 +6,7 @@ AWS_CREDENTIALS = Aws::Credentials.new(
 S3_BUCKET = Aws::S3::Resource.new(
   region: 'us-east-1',
   credentials: AWS_CREDENTIALS
-).bucket('image-wiz-production')
+).bucket('freeflo-production')
 
 Aws.config.update({
   region: 'us-east-1',
