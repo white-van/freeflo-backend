@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   registration: 'users/registration'
   }
 
-  resources :user do
+  resources :users do
     get '/projects', to: 'projects#index'
     get '/pull_requests', to: 'pull_requests#index'
     get '/commits', to: 'versions#index'
