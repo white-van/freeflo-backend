@@ -26,7 +26,7 @@ class PullRequestsController < ApplicationController
   # POST /projects/1/pull_requests
   def create
     creation_params = pull_request_params.merge({
-                                                  project_id: params[:id],
+
                                                   user_id: current_user.id
                                                 })
     @pull_request = PullRequest.new(creation_params)
@@ -92,17 +92,18 @@ class PullRequestsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_pull_request
-    @pull_request = PullRequest.find(params[:id])
+    @pull_request = PullRequest.find(params[:pull_request_id])
   end
 
   def set_project
-    @project = Project.find(params[:id])
+    @project = Project.find(params[:project_id])
   end
 
   # Only allow a trusted parameter "white list" through.
   def pull_request_params
     params.require(:pull_request).permit(
-      :title,
+      :branch_id,
+      :name,
       :reviewers
     )
   end

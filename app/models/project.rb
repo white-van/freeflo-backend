@@ -6,7 +6,7 @@ class Project < ApplicationRecord
   has_many :contributions, dependent: :delete_all
   has_many :contributors, through: :contributions, foreign_key: 'user_id', class_name: 'User'
 
-  def self.branch_or_main(name = nil)
+  def branch_or_main(name = nil)
     branches.where(name: (name || 'main'))
             .limit(1)
             .first

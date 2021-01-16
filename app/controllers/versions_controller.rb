@@ -19,7 +19,7 @@ class VersionsController < ApplicationController
   # Must pass commit: {branch_name: ...} in the body of the request. Default is 'main'
   def create
     creation_params = version_params
-    @version = Version.new(creation_params)
+    @version = Version.new(creation_params.slice(:content).merge(user_id: current_user.id))
     @version.branch_id = @branch.id
     ActiveRecord::Base.transaction do
       @version.save!
@@ -52,7 +52,7 @@ class VersionsController < ApplicationController
   end
 
   def set_project
-    @project = Project.find(params[:id])
+    @project = Project.find(params[:project_id])
   end
 
   def set_branch
