@@ -2,6 +2,7 @@
   username: @project.user.username,
   project_name: @project.name,
   description: @project.description,
+  content: @project.context
   heart_count: @project.heart_count,
   created_at: @project.created_at,
   updated_at: @project.updated_at,

@@ -1,0 +1,8 @@
+{
+  id: @version.id,
+  content: @version.context,
+  created_at: @version.created_at,
+  updated_at: @version.updated_at,
+  pull_request_id: @version.pull_request_id,
+  branch_id: @version.branch_id
+}
