@@ -5,7 +5,7 @@ class VersionsController < ApplicationController
 
   # GET /projects/1/versions
   def index
-    @versions = @project.versions
+    @versions = @project.page(@page).per(@per)
 
     render json: @versions
   end

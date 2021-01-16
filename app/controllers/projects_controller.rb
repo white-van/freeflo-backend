@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    @projects = Project.all
+    @projects = Project.page(@page).per(@per)
 
     render json: @projects
   end
