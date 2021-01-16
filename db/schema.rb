@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_053907) do
+ActiveRecord::Schema.define(version: 2021_01_16_062522) do
+
+  create_table "blacklisted_tokens", force: :cascade do |t|
+    t.string "token"
+    t.bigint "user_id", null: false
+    t.datetime "expire_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_blacklisted_tokens_on_user_id"
+  end
 
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
@@ -28,8 +37,30 @@ ActiveRecord::Schema.define(version: 2021_01_16_053907) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
+    t.bigint "fork_id"
     t.index ["organization_id"], name: "index_projects_on_organization_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
+  create_table "pull_requests", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "reviewers", array: true
+    t.boolean "accepted"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_pull_requests_on_project_id"
+    t.index ["reviewers"], name: "index_pull_requests_on_reviewers", using: :gin
+    t.index ["user_id"], name: "index_pull_requests_on_user_id"
+  end
+
+  create_table "refresh_tokens", force: :cascade do |t|
+    t.string "token"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_refresh_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -55,8 +86,12 @@ ActiveRecord::Schema.define(version: 2021_01_16_053907) do
     t.index ["user_id"], name: "index_versions_on_user_id"
   end
 
+  add_foreign_key "blacklisted_tokens", "users"
   add_foreign_key "projects", "organizations"
   add_foreign_key "projects", "users"
+  add_foreign_key "pull_requests", "projects"
+  add_foreign_key "pull_requests", "users"
+  add_foreign_key "refresh_tokens", "users"
   add_foreign_key "users", "organizations"
   add_foreign_key "versions", "projects"
   add_foreign_key "versions", "users"
