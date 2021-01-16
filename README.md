@@ -1,24 +1,32 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Besides Ruby, Rails, and Bundler, make sure you have these:
 
-Things you may want to cover:
+1. PostgreSQL `brew install postgresql`
+2. CockroachDB `brew install cockroachdb/tap/cockroach`
+3. CockroachDB certificate (Discord)
+4. Redis `brew install redis`
 
-* Ruby version
+After cloning and setting up the repo, run
 
-* System dependencies
+```
+bundle install
+```
 
-* Configuration
+Install Foreman (Not in Gemfile):
 
-* Database creation
+```
+gem install foreman
+```
 
-* Database initialization
+Start the Rails server, Redis, and workers with:
 
-* How to run the test suite
+```
+foreman start
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+To launch CockroachDB SQL, run:
 
-* Deployment instructions
-
-* ...
+```
+cockroach sql --url 'postgres://rails-backend@freeflow-main-7dmaws-us-east-1.cockroachlabscloud:26257/defaultdb?sslmode=verify-fullsslrootcert=< certs_directory >/freeflow-main-ca.crt'
+```
