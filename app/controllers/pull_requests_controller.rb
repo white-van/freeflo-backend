@@ -6,7 +6,7 @@ class PullRequestsController < ApplicationController
   # GET /projects/1/pull_requests
   def index
     @pull_requests = PullRequest.page(@page).per(@per)
-    render json: @pull_requests
+    render 'pull_requests/show', status: :created
   end
 
   # GET /me/pull_requests/owned
@@ -68,7 +68,7 @@ class PullRequestsController < ApplicationController
     accepted = params[:status] == 'accepted'
 
     if @pull_request.update(status: params[:status], accepted: accepted)
-      render json: @pull_request, status: :ok
+      render 'pull_requests/show', status: :created
     else
       render json: @pull_request.errors, status: :unprocessable_entity
     end
@@ -77,7 +77,7 @@ class PullRequestsController < ApplicationController
   # PATCH/PUT /pull_requests/1
   def update
     if @pull_request.update(pull_request_params)
-      render json: @pull_request
+      rrender 'pull_requests/show', status: :created
     else
       render json: @pull_request.errors, status: :unprocessable_entity
     end

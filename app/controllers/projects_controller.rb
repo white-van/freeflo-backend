@@ -13,19 +13,19 @@ class ProjectsController < ApplicationController
   # GET /projects
   def index
     @projects = Project.page(@page).per(@per)
-    render json: @projects
+    render 'projects/index', status: :created
   end
 
   # GET /me/projects/recommended
   def recommended
     @projects = current_user.recommended_projects.page(@page).per(@per)
-    render json: @projects
+    render 'projects/index', status: :created
   end
 
   # GET /me/projects/owned
   def owned
     @projects = current_user.projects.page(@page).per(@per)
-    render json: @projects
+    render 'projects/index', status: :created
   end
 
   # GET /me/projects/unowned_contrib
@@ -34,12 +34,12 @@ class ProjectsController < ApplicationController
                        .where('contributions.user_id = ?', current_user.id)
                        .where.not('projects.user_id = ?', current_user.id)
                        .includes(:user).page(@page).per(@per)
-    render json: @projects
+    render 'projects/index', status: :created
   end
 
   # GET /projects/1
   def show
-    render json: @project
+    render 'projects/show', status: :created
   end
 
   # GET /projects/1/contributors
@@ -67,7 +67,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   def update
     if @project.update(project_params)
-      render json: @project
+      render 'projects/show', status: :created
     else
       render json: @project.errors, status: :unprocessable_entity
     end
