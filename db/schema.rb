@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_065910) do
+ActiveRecord::Schema.define(version: 2021_01_16_090229) do
 
   create_table "blacklisted_tokens", force: :cascade do |t|
     t.string "token"
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 2021_01_16_065910) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "organization_id"
-    t.bigint "fork_id"
     t.bigint "heart_count", default: 0
+    t.bigint "source_fork_id"
     t.index ["organization_id"], name: "index_projects_on_organization_id"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
@@ -78,11 +78,13 @@ ActiveRecord::Schema.define(version: 2021_01_16_065910) do
 
   create_table "versions", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "project_id", null: false
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "project_id"
+    t.bigint "pull_request_id"
     t.index ["project_id"], name: "index_versions_on_project_id"
+    t.index ["pull_request_id"], name: "index_versions_on_pull_request_id"
     t.index ["user_id"], name: "index_versions_on_user_id"
   end
 
@@ -94,5 +96,6 @@ ActiveRecord::Schema.define(version: 2021_01_16_065910) do
   add_foreign_key "refresh_tokens", "users"
   add_foreign_key "users", "organizations"
   add_foreign_key "versions", "projects"
+  add_foreign_key "versions", "pull_requests"
   add_foreign_key "versions", "users"
 end

@@ -17,7 +17,11 @@ class PullRequestsController < ApplicationController
 
   # POST /projects/1/pull_requests
   def create
-    @pull_request = PullRequest.new(pull_request_params)
+    creation_params = pull_request_params.merge({
+                                                  project_id: params[:id],
+                                                  user_id: current_user.id
+                                                })
+    @pull_request = PullRequest.new(creation_params)
 
     if @pull_request.save
       render json: @pull_request, status: :created, location: @pull_request
@@ -53,6 +57,10 @@ class PullRequestsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def pull_request_params
-    params.fetch(:pull_request, {})
+    params.require(:pull_request).permit(
+      :project_id,
+      :user_id,
+      :reviewers
+    )
   end
 end
