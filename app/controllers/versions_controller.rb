@@ -54,10 +54,7 @@ class VersionsController < ApplicationController
   end
 
   def set_branch
-    @branch = @project.branches
-                      .where(name: (creation_params[:branch_name] || 'main'))
-                      .limit(1)
-                      .first
+    @branch = @project.branch_or_main(params.dig(:commit, :branch_name))
   end
 
   # Only allow a trusted parameter "white list" through.

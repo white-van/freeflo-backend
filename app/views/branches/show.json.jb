@@ -1,0 +1,5 @@
+{
+  id: @branch.id,
+  created_at: @branch.created_at,
+  updated_at: @branch.updated_at
+}

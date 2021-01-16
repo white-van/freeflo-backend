@@ -22,10 +22,18 @@ Rails.application.routes.draw do
 
   resources :projects do
     resources :versions, path: '/commits', shallow: true
-    resources :pull_requests, shallow: true
+    resources :pull_requests, except: [:destroy, :show, :update]
+    resources :branches, shallow: true
     member do
       post '/heart', to: 'projects#heart'
       delete '/heart', to: 'projects#unheart'
+    end
+  end
+
+  resources :pull_requests, only: [:destroy, :show, :update] do
+    member do
+      post '/status', to: 'pull_requests#status'
+      post '/merge', to: 'pull_requests#merge'
     end
   end
 

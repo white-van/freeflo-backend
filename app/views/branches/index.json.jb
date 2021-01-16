@@ -1,0 +1,6 @@
+@branches.map do |branch|
+  {
+    id: branch.id,
+    url: branch_url(branch, format: :json)
+  }
+end
