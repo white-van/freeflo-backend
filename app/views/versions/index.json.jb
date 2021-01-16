@@ -1,0 +1,10 @@
+@versions.map do |version|
+{
+  id: version.id,
+  content: version.content,
+  created_at: version.created_at,
+  updated_at: version.updated_at,
+  branch_id: version.branch_id,
+  branch_name: version.branch.name
+}
+end
