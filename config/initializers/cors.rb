@@ -4,14 +4,13 @@
 # Handle Cross-Origin Resource Sharing (CORS) in order to accept cross-origin AJAX requests.
 
 # Read more: https://github.com/cyu/rack-cors
-Rails.application.config.hosts << "https://freeflo-backend.herokuapp.com"
 
- Rails.application.config.middleware.insert_before 0, Rack::Cors do
-   allow do
-     origins ["http://localhost:3005","freeflo.space"]
+ #Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  # allow do
+   #  origins ["http://localhost:3005","freeflo.space"]
 
-     resource '*',
-       headers: :any,
-       methods: [:get, :post, :put, :patch, :delete, :options, :head]
-   end
- end
+    # resource '*',
+     #  headers: :any,
+      # methods: [:get, :post, :put, :patch, :delete, :options, :head]
+  # end
+ #end
