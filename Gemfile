@@ -25,7 +25,7 @@ gem 'jb'
 gem 'kaminari'
 
 gem 'dotenv-rails'
-
+gem 'aws-sdk'
 gem 'api_guard'
 
 # Reduces boot times through caching; required in config/boot.rb
