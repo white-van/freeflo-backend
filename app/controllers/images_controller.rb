@@ -1,4 +1,5 @@
 class ImagesController < ApplicationController
+  action :get_presigned_url
 
   # GET /presigned_url
   def get_presigned_url  
@@ -11,18 +12,5 @@ class ImagesController < ApplicationController
   
     render json: signature, status: :ok
   end
-
-
-  private
-
-    def get_presigned_url
-      presigned_url = S3_BUCKET.presigned_post(
-      key: "#{SecureRandom.uuid}_${filename}",
-      success_action_status: '201',
-      signature_expiration: (Time.now.utc + 15.minutes),
-      acl: 'public-read'
-    )
-    { url: presigned_url.url, url_fields: presigned_url.fields }
-    end
 
 end

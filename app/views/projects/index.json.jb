@@ -1,5 +1,6 @@
 @projects.map do |project|
   {
+  id: project.id,
   username: project.user.username,
   project_name: project.name,
   description: project.description,

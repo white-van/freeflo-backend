@@ -99,6 +99,7 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(
       :name,
+      :user_id,
       :description,
       :organization_id
     )
