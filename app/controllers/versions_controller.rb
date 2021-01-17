@@ -7,12 +7,12 @@ class VersionsController < ApplicationController
   # GET /projects/1/commits
   def index
     @versions = @branch.versions.page(@page).per(@per)
-    render json: @versions
+    render 'versions/index', status: :created
   end
 
   # GET /versions/1
   def show
-    render json: @version
+    render 'versions/show', status: :created
   end
 
   # POST /projects/1/commits
@@ -33,7 +33,7 @@ class VersionsController < ApplicationController
   # PATCH/PUT /versions/1
   def update
     if @version.update(version_params)
-      render json: @version
+      render 'versions/show', status: :created
     else
       render json: @version.errors, status: :unprocessable_entity
     end
