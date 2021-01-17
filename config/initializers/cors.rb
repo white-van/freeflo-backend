@@ -9,7 +9,6 @@
     origins ['http://localhost:3000','https://freeflo.space/']
      resource '*',
        headers: :any,
-       methods: [:get, :post, :put, :patch, :delete, :options, :head],
-       credentials: true
+       methods: [:get, :post, :put, :patch, :delete, :options, :head]
    end
  end
